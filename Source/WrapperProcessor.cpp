@@ -182,6 +182,8 @@ void WrapperProcessor::processBlock(AudioBuffer<float> &buffer,
   //   }
 }
 
-size_t WrapperProcessor::getPluginState() {}
+size_t WrapperProcessor::getPluginState() {
+    return pluginState.getSize();
+}
 
 void WrapperProcessor::setPluginState() {}
