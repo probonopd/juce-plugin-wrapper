@@ -1,0 +1,122 @@
+# Based on https://github.com/OwlPlug/owlplug-scanner/blob/master/.github/workflows/main.yml
+name: PluginWrapper
+
+on: 
+  push:
+    branches: 
+      - '**'
+
+jobs:
+  build-win:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v3.3.0
+      with:
+        fetch-depth: 0
+        submodules: recursive
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+    - name: "Download Projucer"
+      run: |
+           git clone -b 7.0.5 --depth 1 https://github.com/juce-framework/JUCE JUCE
+           bash -ex ./build/download-projucer.sh
+      shell: bash
+      env:
+        OS: windows
+    - name: Get PluginWrapper Version
+      run: echo "version=$((Select-Xml -Path PluginWrapper.jucer -XPath '//JUCERPROJECT/@version').Node.Value)" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+      id: get-version
+    - name: "Build PluginWrapper"
+      run: sh -ex ./build/build-win.sh
+      shell: bash
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: PluginWrapper-win
+        path: |
+              ./Builds/VisualStudio2019/x64/Release/VST3/PluginWrapper.vst3
+              ./Builds/VisualStudio2019/x64/Release/Standalone Plugin/PluginWrapper.exe
+  build-osx:
+    runs-on: macos-11
+    steps:
+    - uses: actions/checkout@v3.3.0
+      with:
+        fetch-depth: 0
+        submodules: recursive
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+    - name: "Download Projucer"
+      run: |
+           git clone -b 7.0.5 --depth 1 https://github.com/juce-framework/JUCE JUCE
+           bash -ex ./build/download-projucer.sh
+      shell: bash
+      env:
+        OS: osx
+    - name: Install XmlStarlet
+      run: brew install xmlstarlet
+    - name: Get PluginWrapper Version
+      run: echo "version=$(xmlstarlet sel -t -v 'string(//JUCERPROJECT/@version)' PluginWrapper.jucer)" >> $GITHUB_ENV
+      id: get-version
+    - name: "Build OSX"
+      run: sh -ex ./build/build-osx.sh
+      shell: bash
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: PluginWrapper-osx
+        path: |
+              ./Builds/MacOSX/build/Release/PluginWrapper.vst3
+              ./Builds/MacOSX/build/Release/PluginWrapper.app
+  build-linux:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v3.3.0
+      with:
+        fetch-depth: 0
+        submodules: recursive
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+    - name: "Download Projucer"
+      run: |
+           git clone -b 7.0.5 --depth 1 https://github.com/juce-framework/JUCE JUCE
+           bash -ex ./build/download-projucer.sh
+      shell: bash
+      env:
+        OS: linux
+    - name : Update packages
+      run: sudo apt update
+    - name : Install Juce dev dependencies
+      run: sudo apt install libasound2-dev libjack-jackd2-dev ladspa-sdk libcurl4-openssl-dev libfreetype6-dev libx11-dev libxcomposite-dev libxcursor-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev libwebkit2gtk-4.0-dev libglu1-mesa-dev mesa-common-dev
+    - name: Install XmlStarlet
+      run: sudo apt install xmlstarlet
+    - name: Get PluginWrapper Version
+      run: echo "version=$(xmlstarlet sel -t -v 'string(//JUCERPROJECT/@version)' PluginWrapper.jucer)" >> $GITHUB_ENV
+      id: get-version
+    - name: "Build Linux"
+      run: sh -ex ./build/build-linux.sh
+      shell: bash
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: PluginWrapper-linux
+        path: |
+              ./Builds/LinuxMakefile/build/PluginWrapper.vst3
+              ./Builds/LinuxMakefile/build/PluginWrapper
+  release:
+    name: "Release"
+    needs: [build-win, build-osx, build-linux]
+    if: github.ref == 'refs/heads/master'
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3.3.0
+      - name: Retrieve artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ./build
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.REPO_ACCESS_TOKEN }}"
+          prerelease: true
+          automatic_release_tag: latest
+          title: PluginWrapper Latest
+          files: |
+            build/PluginWrapper-osx/*
+            build/PluginWrapper-win/*
+            build/PluginWrapper-linux/*

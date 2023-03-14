@@ -10,7 +10,7 @@ Builds/
 .DS_Store
 
 ## Build generated
-build/
+build/bin
 DerivedData/
 
 ## Various settings
