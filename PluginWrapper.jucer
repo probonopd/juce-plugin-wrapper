@@ -2,7 +2,8 @@
 
 <JUCERPROJECT id="s74G6m" name="PluginWrapper" projectType="audioplug" reportAppUsage="0"
               displaySplashScreen="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              projectLineFeed="&#10;" version="1.1.0" jucerFormatVersion="1">
+              projectLineFeed="&#10;" version="1.1.0" jucerFormatVersion="1"
+              pluginFormats="buildStandalone,buildVST,buildVST3" headerPath="/home/user/stacker/vstsdk2.4">
   <MAINGROUP id="oDuHT7" name="PluginWrapper">
     <GROUP id="{3DA61DA9-A469-0370-563D-26440E7F77FC}" name="Source">
       <FILE id="EYdrib" name="AboutBox.cpp" compile="1" resource="0" file="Source/AboutBox.cpp"/>
@@ -67,6 +68,30 @@
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
       </MODULEPATHS>
     </VS2019>
+    <CODEBLOCKS_WINDOWS targetFolder="Builds/CodeBlocksWindows" enableGNUExtensions="1"
+                        extraCompilerFlags="-Wa,-mbig-obj" vstLegacyFolder="/home/user/stacker/vstsdk2.4">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_audio_utils" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_cryptography" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../juce"/>
+        <MODULEPATH id="juce_video" path="../../juce"/>
+      </MODULEPATHS>
+    </CODEBLOCKS_WINDOWS>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

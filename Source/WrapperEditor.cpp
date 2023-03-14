@@ -63,10 +63,4 @@ void WrapperEditor::changeListenerCallback(ChangeBroadcaster*)
 void WrapperEditor::handleMenuButton()
 {
     PopupMenu menu;
-    menu.addItem(1, "About...");
-    int sel = menu.show();
-    if (sel)
-    {
-        AboutBox::launch();
-    }
 }
