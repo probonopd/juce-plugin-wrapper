@@ -3,7 +3,7 @@
 <JUCERPROJECT id="s74G6m" name="PluginWrapper" projectType="audioplug" reportAppUsage="0"
               displaySplashScreen="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               projectLineFeed="&#10;" version="1.1.0" jucerFormatVersion="1"
-              pluginFormats="buildStandalone,buildVST,buildVST3" headerPath="">
+              pluginFormats="buildStandalone,buildVST3" headerPath="">
   <MAINGROUP id="oDuHT7" name="PluginWrapper">
     <GROUP id="{3DA61DA9-A469-0370-563D-26440E7F77FC}" name="Source">
       <FILE id="EYdrib" name="AboutBox.cpp" compile="1" resource="0" file="Source/AboutBox.cpp"/>
