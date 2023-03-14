@@ -7,7 +7,7 @@ You will need your own copy of the [JUCE Framework](https://juce.com/) to work w
 
 ## Known plug-ins list
 
-One tricky aspect of building a JUCE-based host program is the need to create a "known plug-ins list" (class juce::KnownPluginList), and register various plug-ins into it. This code skirts that obstacle by "borrowing" the known plug-ins list managed by the JUCE [AudioPluginHost](https://github.com/juce-framework/JUCE/tree/master/extras/AudioPluginHost) example program. You will need to compile and run that one, and register at least one of your plug-ins (I used [u-he's Hive 2](https://u-he.com/products/hive/) in VST3 format).
+One tricky aspect of building a JUCE-based host program is the need to create a "known plug-ins list" (class juce::KnownPluginList), and register various plug-ins into it. This code skirts that obstacle by "hardcoding" `C:\\Program Files\\Common Files\\VST3\\Dexed.vst3`.
 
 ## Memory leak issue
 
