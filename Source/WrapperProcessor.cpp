@@ -21,12 +21,12 @@ AudioProcessor *JUCE_CALLTYPE createPluginFilter() {
                                 errorMessage)
           .release();
   if (instance) {
-    std::cout << "Loaded Plugin instance: " << instance->getName().toStdString()
+    std::cout << "Loaded plugin instance: " << instance->getName().toStdString()
               << std::endl;
     return new WrapperProcessor(instance);
   }
 
-  DBG("Error instantiating " + pid.name);
+  DBG("Error instantiating plugin");
   DBG(" ->" + errorMessage);
 
   return nullptr;
